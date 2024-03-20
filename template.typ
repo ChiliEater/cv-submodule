@@ -57,6 +57,7 @@
   nephritis: rgb("#27AE60"),
   concrete: rgb("#95A5A6"),
   darknight: rgb("#131A28"),
+  darkblue: rgb("#09519d"),
 )
 
 #let regularColors = (
@@ -243,12 +244,14 @@
       phone: fa-phone(),
       email: fa-envelope(),
       linkedin: fa-linkedin(),
-      homepage: fa-pager(),
+      homepage: fa-globe(),
       github: fa-square-github(),
+      codeberg: fa-git-alt(),
       gitlab: fa-gitlab(),
       orcid: fa-orcid(),
       researchgate: fa-researchgate(),
       location: fa-location-dot(),
+      itch: fa-itch-io(),
       extraInfo: "",
     )
     let n = 1
@@ -282,8 +285,12 @@
           link("https://www.linkedin.com/in/" + v)[#v]
         } else if k == "github" {
           link("https://github.com/" + v)[#v]
+        } else if k == "codeberg" {
+          link("https://codeberg.org/" + v)[#v]
         } else if k == "gitlab" {
           link("https://gitlab.com/" + v)[#v]
+        } else if k == "itch" {
+          link("https://" + v + ".itch.io/")[#v]
         } else if k == "homepage" {
           link("https://" + v)[#v]
         } else if k == "orcid" {
@@ -308,6 +315,7 @@
     stroke: none,
     row-gutter: 6mm,
     [#headerFirstNameStyle(firstName) #h(5pt) #headerLastNameStyle(lastName)],
+    [#headerInfoStyle(languageSwitch(headerInfoPersonal))],
     [#headerInfoStyle(makeHeaderInfo())],
     [#headerQuoteStyle(languageSwitch(headerQuoteInternational))]
   )
@@ -315,7 +323,7 @@
 
   let makeHeaderPhotoSection() = {
     if profilePhoto != "" {
-      image(profilePhoto, height: 3.6cm)
+      image(profilePhoto, height: 3.6cm, width: 3.6cm)
     } else {
       v(3.6cm)
     }
@@ -332,13 +340,14 @@
   )
 
   if hasPhoto {
-    makeHeader(makeHeaderNameSection(), makeHeaderPhotoSection(), (auto, 20%), align)
+    makeHeader(makeHeaderNameSection(), makeHeaderPhotoSection(), (auto, 21%), align)
   } else {
     makeHeader(makeHeaderNameSection(), makeHeaderPhotoSection(), (auto, 0%), align)
   }
 }
 
 #let cvSection(title, highlighted: true, letters: 3) = {
+  v(15pt)
   let highlightText = title.slice(0,letters)
   let normalText = title.slice(letters)
 
@@ -355,6 +364,7 @@
   }
   h(2pt)
   box(width: 1fr, line(stroke: 0.9pt, length: 100%))
+  v(10pt)
 }
 
 #let cvEntry(
@@ -363,6 +373,7 @@
   date: "Date",
   location: "Location",
   description: "Description",
+  url: "",
   logo: "",
   tags: ()
 ) = {
@@ -398,10 +409,16 @@
       {entryA2Style(ifSocietyFirst(varEntrySocietyFirst, location,date))},
       {entryB1Style(ifSocietyFirst(varEntrySocietyFirst, title, society))},
       {entryB2Style(ifSocietyFirst(varEntrySocietyFirst, date,location))},
-    )
+    ),
   )
   entryDescriptionStyle(description)
+  v(beforeEntryDescriptionSkip)
+  if url != "" [
+    #link(url)
+  ]
+  v(2pt)
   entryTagListStyle(tags)
+  v(10pt)
 }
 
 #let cvSkill(
@@ -409,14 +426,14 @@
   info: "Info",
 ) = {
   table(
-    columns: (16%, 1fr),
+    columns: (10%, 1fr),
     inset: 0pt,
     column-gutter: 10pt,
     stroke: none,
     skillTypeStyle(type),
     skillInfoStyle(info),
   )
-  v(-6pt)
+  //v(-6pt)
 }
 
 #let cvHonor(
@@ -427,7 +444,7 @@
   location: ""
 ) = {
   table(
-    columns: (16%, 1fr, 15%),
+    columns: (10%, 1fr, 15%),
     inset: 0pt,
     column-gutter: 10pt,
     align: horizon,
@@ -442,7 +459,7 @@
     ]},
     honorLocationStyle(location)
   )
-  v(-6pt)
+  //v(-6pt)
 }
 
 #let cvPublication(
@@ -519,10 +536,10 @@
   set page(
     paper: "a4",
     margin: (
-      left: 1.4cm,
-      right: 1.4cm,
-      top: .8cm,
-      bottom: .4cm,
+      left: 2.1cm,
+      right: 2.1cm,
+      top: 1.5cm,
+      bottom: 1.5cm,
     ),
   )
   doc
