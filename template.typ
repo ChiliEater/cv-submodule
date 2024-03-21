@@ -218,7 +218,7 @@
 #let letterHeaderAddressStyle(str) = {text(
   fill: gray,
   size: 0.9em,
-  smallcaps(str)
+  str
 )}
 
 #let letterDateStyle(str) = {text(
